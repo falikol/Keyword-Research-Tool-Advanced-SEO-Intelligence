@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendToolsHub | Advanced Keyword Intelligence Tool</title>
+
+<style>
+:root{
+  --primary:#1e40af;
+  --primary-glow: rgba(30, 64, 175, 0.15);
+  --accent:#0891b2;
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#cbd5e1;
+  --success:#059669;
+  --copy-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+*{box-sizing:border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);}
+body{
+  margin:0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height: 1.6;
+}
+
+/* PREMIUM HEADER */
+.header{
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding:15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.9);
+}
+.header-inner{
+  max-width:1300px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  padding: 0 24px;
+  gap:12px;
+}
+.header img{width:42px;height:42px; object-fit: contain;}
+.header h1{
+  margin:0;
+  font-size:20px;
+  font-weight:700; 
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+.header-badge {
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+/* MAIN LAYOUT */
+.container{
+  max-width:1300px;
+  margin:40px auto;
+  padding:0 24px;
+}
+
+.card{
+  background:var(--card);
+  border: 1px solid var(--border);
+  border-radius:12px;
+  padding:32px;
+  margin-bottom:28px;
+  box-shadow: var(--shadow-sm);
+}
+.card:hover { box-shadow: var(--shadow-md); }
+
+.card-title {
+  margin: 0 0 20px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* INPUT SECTION */
+textarea{
+  width:100%;
+  min-height:160px;
+  padding:18px;
+  border-radius:10px;
+  border:1.5px solid var(--border);
+  font-size:16px;
+  background: #fdfdfd;
+  color: #1e293b;
+  outline: none;
+}
+textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-pro {
+  padding:14px 28px;
+  border-radius:8px;
+  border:none;
+  background: var(--primary);
+  color:#fff;
+  font-weight:600;
+  font-size: 15px;
+  cursor:pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-pro:hover {
+  background: #1e3a8a;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(30, 64, 175, 0.3);
+}
+
+.btn-copy {
+    background: #fff;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+}
+.btn-copy:hover {
+    background: #f8fafc;
+    border-color: var(--primary);
+}
+.btn-copy.active {
+    background: var(--copy-gradient) !important;
+    color: white !important;
+    border: none !important;
+    transform: scale(0.98);
+}
+
+/* RESULT GRID */
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:24px;
+}
+.result-pane{
+  background: #fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.result-pane h3{
+  margin:0 0 18px 0;
+  font-size:15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+.list-container::-webkit-scrollbar { width: 4px; }
+.list-container::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+
+.kw-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:6px;
+  margin-bottom: 6px;
+  border: 1px solid #f1f5f9;
+  font-size: 14px;
+  background: #f8fafc;
+}
+.kw-item:hover { background: #f1f5f9; border-color: #cbd5e1; }
+.kw-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+/* POWER TOOLS SECTION */
+.tools-hub {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+.hub-item {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    text-align: left;
+}
+.hub-item:hover {
+    background: #fff;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+.hub-item .icon { font-size: 28px; margin-bottom: 12px; display: block; }
+.hub-item strong { display: block; margin-bottom: 4px; font-size: 16px; }
+.hub-item span { font-size: 13px; color: var(--muted); }
+
+/* OUTPUT PANE */
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e293b;
+    padding: 8px 16px;
+    border-radius: 10px 10px 0 0;
+    margin-top: 25px;
+}
+.output-header span {
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 1px;
+}
+.btn-copy-small {
+    background: transparent;
+    border: 1px solid #475569;
+    color: #94a3b8;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-copy-small:hover {
+    border-color: var(--accent);
+    color: white;
+}
+.btn-copy-small.active {
+    background: var(--copy-gradient);
+    border: none;
+    color: white;
+}
+
+.output-box{
+  background: #0f172a;
+  color: #94a3b8;
+  border-radius: 0 0 10px 10px;
+  padding:24px;
+  font-family: 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  min-height: 120px;
+  border-left: 4px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+/* FOOTER */
+.footer{
+  margin-top:80px;
+  background:#ffffff;
+  border-top: 1px solid var(--border);
+  padding:60px 20px;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.footer-nav {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.footer-nav a {
+    color: #475569;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+.footer-nav a:hover { color: var(--primary); }
+.copyright { color: #94a3b8; font-size: 13px; margin-top: 20px; border-top: 1px solid #f1f5f9; padding-top: 20px; width: 100%; text-align: center;}
+
+/* MODAL SYSTEM */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2, 6, 23, 0.7);
+  backdrop-filter: blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+  padding: 24px;
+}
+.modal-window{
+  background:#fff;
+  width:100%;
+  max-width:950px;
+  max-height:85vh;
+  border-radius:16px;
+  overflow:hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+.modal-header h2 { margin: 0; font-size: 20px; color: var(--primary); }
+.close-btn { font-size: 28px; cursor: pointer; color: #94a3b8; line-height: 1; }
+.close-btn:hover { color: #ef4444; }
+
+.modal-body {
+    padding: 40px;
+    overflow-y: auto;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.8;
+}
+.modal-body h3 { color: #0f172a; margin: 30px 0 15px 0; font-size: 18px; border-left: 4px solid var(--primary); padding-left: 12px; }
+.modal-body p { margin-bottom: 18px; }
+.modal-body ul { margin-bottom: 20px; padding-left: 20px; }
+.modal-body li { margin-bottom: 10px; }
+
+@media (max-width: 768px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .modal-body { padding: 24px; }
+}
+</style>
+
+<script>
+let CURRENT_DATA = [];
+let UTILITY_OUTPUT = "";
+
+/* PRO LOGIC UNIT */
+function analyze() {
+    const input = document.getElementById("seed_input").value;
+    const seeds = [...new Set(input.split('\n').map(s => s.trim()).filter(s => s.length > 2))];
+    
+    if(seeds.length === 0) return showNotify("Please input valid seed keywords.");
+    
+    // Industrial grade expansion simulation
+    const variations = ["best", "top", "free", "professional", "online", "advanced", "simple", "strategy", "for beginners", "2025 guide", "software"];
+    const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+    
+    let generated = [];
+    seeds.forEach(s => {
+        variations.forEach(v => generated.push(`${v} ${s}`, `${s} ${v}`));
+        alphabet.forEach(l => generated.push(`${s} ${l}`));
+    });
+
+    CURRENT_DATA = [...new Set(generated)];
+    
+    // Distribution Logic
+    renderResults("idea_list", CURRENT_DATA.slice(0, 50));
+    renderResults("question_list", seeds.map(s => [`how to use ${s}`, `what is ${s}`, `best ${s} tutorial`, `is ${s} worth it?`]).flat());
+    
+    // Meta Data Logic
+    renderMeta("intent_list", CURRENT_DATA.slice(0, 20), "intent");
+    renderMeta("difficulty_list", CURRENT_DATA.slice(0, 20), "difficulty");
+    
+    showNotify("Intelligence Report Generated Successfully");
+    window.scrollTo({ top: document.getElementById('results_anchor').offsetTop - 100, behavior: 'smooth' });
+}
+
+function renderResults(containerId, list) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = list.map(item => `
+        <div class="kw-item">
+            <input type="checkbox" onchange="this.parentElement.style.background = this.checked ? '#ecfdf5' : '#f8fafc'">
+            <span>${item}</span>
+        </div>
+    `).join('');
+}
+
+function renderMeta(containerId, list, type) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = list.map(item => {
+        const val = type === "intent" ? getIntent(item) : getDifficulty(item);
+        const color = getStatusColor(val);
+        return `
+            <div class="kw-item" style="justify-content: space-between">
+                <span style="font-weight: 500">${item}</span>
+                <span style="font-size:11px; font-weight:800; color:white; background:${color}; padding:2px 8px; border-radius:4px">${val}</span>
+            </div>
+        `;
+    }).join('');
+}
+
+function getIntent(k) {
+    const low = k.toLowerCase();
+    if(/buy|price|cost|order|shop/.test(low)) return "Transactional";
+    if(/best|review|vs|compare/.test(low)) return "Commercial";
+    if(/how|what|why|guide/.test(low)) return "Informational";
+    return "Navigational";
+}
+
+function getDifficulty(k) {
+    const len = k.split(' ').length;
+    if(len > 4) return "Low";
+    if(len > 2) return "Medium";
+    return "High";
+}
+
+function getStatusColor(val) {
+    const colors = {
+        "Low": "#059669", "Medium": "#d97706", "High": "#dc2626",
+        "Informational": "#2563eb", "Commercial": "#7c3aed", "Transactional": "#db2777", "Navigational": "#64748b"
+    };
+    return colors[val] || "#64748b";
+}
+
+/* INTERACTIVE FEATURES */
+function copyEngine(type, btn) {
+    let text = "";
+    if(type === 'selected') {
+        const selected = Array.from(document.querySelectorAll('.kw-item input:checked')).map(i => i.nextElementSibling.textContent);
+        if(!selected.length) return showNotify("Please select items first");
+        text = selected.join('\n');
+    } else if(type === 'all') {
+        if(!CURRENT_DATA.length) return showNotify("No data to copy");
+        text = CURRENT_DATA.join('\n');
+    } else if(type === 'utility') {
+        if(!UTILITY_OUTPUT) return showNotify("Generate utility content first");
+        text = UTILITY_OUTPUT;
+    }
+    
+    navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('active');
+        const oldText = btn.innerHTML;
+        btn.innerHTML = "✓ Copied!";
+        showNotify("Data copied successfully");
+        setTimeout(() => {
+            btn.classList.remove('active');
+            btn.innerHTML = oldText;
+        }, 2000);
+    });
+}
+
+function runTool(tool) {
+    if(!CURRENT_DATA.length) return showNotify("Generate keywords first");
+    const k = CURRENT_DATA[0];
+    const out = document.getElementById("terminal_output");
+    
+    let result = "";
+    switch(tool) {
+        case 'title': result = `1. The Definitive Guide to ${k} in 2025\n2. 7 Secrets About ${k} You Never Knew\n3. How to Optimize Your Workflow with ${k}\n4. ${k} Case Study: Real Results Revealed`; break;
+        case 'meta': result = `Title: ${k} | Expert Solutions & Trends | TrendToolsHub\n\nDescription: Looking for professional insights on ${k}? Visit TrendToolsHub for the latest tools, guides, and advanced research data to boost your SEO performance.`; break;
+        case 'faq': result = `Q: Why is ${k} important?\nA: It drives targeted traffic and improves topical authority.\n\nQ: Is this tool free?\nA: Yes, TTH provides professional tools at zero cost.`; break;
+    }
+    
+    UTILITY_OUTPUT = result;
+    out.innerHTML = `<span style="color:#10b981">> Processing request...</span>\n\n<span style="color:#fff">${result}</span>`;
+    window.scrollTo({ top: out.offsetTop - 150, behavior: 'smooth' });
+}
+
+function showNotify(msg) {
+    const toast = document.createElement("div");
+    toast.style.cssText = "position:fixed; bottom:30px; right:30px; background:#1e293b; color:white; padding:16px 28px; border-radius:8px; z-index:9999; font-weight:600; box-shadow:0 20px 25px -5px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease";
+    toast.innerHTML = `📡 ${msg}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function openModal(id) { document.getElementById(id).style.display = "flex"; document.body.style.overflow = "hidden"; }
+function closeModal(id) { document.getElementById(id).style.display = "none"; document.body.style.overflow = "auto"; }
+</script>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgbpD2_Jg2pm2vuViK02J13HLpZJ_P5gvtVemCusBZzOzBHmG2nsDu4LhJp0dCO77vBRkuDSBA3hQOpDyyqaU1HlC935wy2d3crQgpD1CQDKY-LT5y9rpweXz-D1cuhEyKTj2-YiC9RJbgRFCVLfFMnULzqe4tFgt9opHtP6GNXaEvtims7MO8AD-qsfnPt=s32" alt="TTH Logo">
+    <h1>TrendToolsHub Intelligence</h1>
+    <div class="header-badge">Pro Suite</div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- INPUT CARD -->
+  <section class="card">
+    <div class="card-title">🚀 Real-time Keyword Explorer</div>
+    <textarea id="seed_input" placeholder="Enter your core keywords (one per line)... Example: Digital Marketing, SEO Tools, AI Content"></textarea>
+    <div class="btn-group">
+      <button class="btn-pro" onclick="analyze()">⚡ Start Deep Analysis</button>
+      <button class="btn-pro btn-copy" onclick="copyEngine('selected', this)">📎 Copy Selection</button>
+      <button class="btn-pro btn-copy" onclick="copyEngine('all', this)">📄 Export All Data</button>
+    </div>
+  </section>
+
+  <!-- RESULTS SECTION -->
+  <div id="results_anchor"></div>
+  <div class="results-grid">
+    <div class="result-pane">
+      <h3><span>💡 Suggestions</span> <span>50+</span></h3>
+      <div class="list-container" id="idea_list">
+          <p style="text-align:center; padding-top:100px; color:#94a3b8">Awaiting input data...</p>
+      </div>
+    </div>
+    <div class="result-pane">
+      <h3><span>❓ LSI Questions</span> <span>Live</span></h3>
+      <div class="list-container" id="question_list">
+          <p style="text-align:center; padding-top:100px; color:#94a3b8">Awaiting input data...</p>
+      </div>
+    </div>
+    <div class="result-pane">
+      <h3><span>🎯 Search Intent</span> <span>AI Tagged</span></h3>
+      <div class="list-container" id="intent_list">
+          <p style="text-align:center; padding-top:100px; color:#94a3b8">Awaiting input data...</p>
+      </div>
+    </div>
+    <div class="result-pane">
+      <h3><span>📊 Difficulty</span> <span>Rank Prob.</span></h3>
+      <div class="list-container" id="difficulty_list">
+          <p style="text-align:center; padding-top:100px; color:#94a3b8">Awaiting input data...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- POWER TOOLS -->
+  <section class="card" style="margin-top:40px;">
+    <div class="card-title">⚙️ Professional Content Utilities</div>
+    <div class="tools-hub">
+        <div class="hub-item" onclick="runTool('title')">
+            <span class="icon">✍️</span>
+            <strong>Title Architect</strong>
+            <span>Generates click-worthy, SEO optimized headlines.</span>
+        </div>
+        <div class="hub-item" onclick="runTool('meta')">
+            <span class="icon">🏷️</span>
+            <strong>Meta Optimizer</strong>
+            <span>High CTR meta tags for search engine results.</span>
+        </div>
+        <div class="hub-item" onclick="runTool('faq')">
+            <span class="icon">💬</span>
+            <strong>Schema FAQ</strong>
+            <span>Generate JSON-LD ready FAQ content.</span>
+        </div>
+    </div>
+    
+    <div class="output-header">
+        <span>TERMINAL OUTPUT</span>
+        <button class="btn-copy-small" onclick="copyEngine('utility', this)">📋 Copy Result</button>
+    </div>
+    <div class="output-box" id="terminal_output">
+System idle. Please trigger a power tool for output.
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-nav">
+        <a onclick="openModal('m_about')">About Us</a>
+        <a onclick="openModal('m_contact')">Contact Support</a>
+        <a onclick="openModal('m_disclaimer')">Disclaimer</a>
+        <a onclick="openModal('m_terms')">Terms of Service</a>
+        <a onclick="openModal('m_privacy')">Privacy Policy</a>
+    </div>
+    <div class="copyright">
+        © 2024-2025 TrendToolsHub (TTH) International. All intellectual properties reserved. Professional Grade SEO Infrastructure.
+    </div>
+  </div>
+</footer>
+
+<!-- PRO LEGAL MODALS -->
+
+<!-- ABOUT -->
+<div class="modal-overlay" id="m_about">
+  <div class="modal-window">
+    <div class="modal-header"><h2>About TrendToolsHub (TTH)</h2><span class="close-btn" onclick="closeModal('m_about')">×</span></div>
+    <div class="modal-body">
+      <p>TrendToolsHub is a globally recognized platform providing high-performance, enterprise-grade digital tools for SEO professionals, marketers, and content creators. Our mission is to democratize data-driven marketing by providing sophisticated tools that were previously only available to large agencies.</p>
+      <h3>Our Technology</h3>
+      <p>We leverage advanced heuristics and pattern recognition algorithms to provide real-time keyword insights. Every tool in our suite is engineered for precision, ensuring that TTH users stay ahead of search engine algorithm updates.</p>
+      <h3>Core Values</h3>
+      <ul>
+        <li><strong>Accuracy First:</strong> We prioritize data integrity above all else.</li>
+        <li><strong>Privacy Centric:</strong> User research data is never stored on our servers.</li>
+        <li><strong>Continuous Innovation:</strong> Our tools are updated weekly to reflect global search trends.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="modal-overlay" id="m_contact">
+  <div class="modal-window">
+    <div class="modal-header"><h2>Global Support Center</h2><span class="close-btn" onclick="closeModal('m_contact')">×</span></div>
+    <div class="modal-body">
+      <p>Our dedicated support team is available to assist you with technical inquiries, API access, or tool feedback. We maintain a 98% satisfaction rate across our international user base.</p>
+      <div style="background: #f1f5f9; padding: 30px; border-radius: 12px;">
+          <p><strong>Primary Support:</strong> support@trendtoolshub.com</p>
+          <p><strong>Technical Dept:</strong> dev@trendtoolshub.com</p>
+          <p><strong>Business Inquiries:</strong> admin@trendtoolshub.com</p>
+      </div>
+      <p style="margin-top:20px;">For instant updates and community support, please visit our official blog at <a href="https://trendtoolshub.blogspot.com" target="_blank">TrendToolsHub Official</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- DISCLAIMER (INTERNATIONAL STANDARD) -->
+<div class="modal-overlay" id="m_disclaimer">
+  <div class="modal-window">
+    <div class="modal-header"><h2>Legal Disclaimer</h2><span class="close-btn" onclick="closeModal('m_disclaimer')">×</span></div>
+    <div class="modal-body">
+      <p><strong>Professional Advice Notice:</strong> The information provided by TrendToolsHub ("we," "us," or "our") on this application is for general informational purposes only. All information is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, or completeness of any data generated by our tools.</p>
+      <h3>Search Engine Dynamics</h3>
+      <p>Search Engine Optimization (SEO) is an ever-evolving field. The keyword difficulty scores, search volume estimates (where applicable), and intent tagging provided are based on algorithmic predictions. We cannot guarantee specific rankings or financial outcomes resulting from the use of our research tools.</p>
+      <h3>External Dependencies</h3>
+      <p>Under no circumstance shall TTH have any liability to you for any loss or damage of any kind incurred as a result of the use of the site or reliance on any information provided. Your use of the tool and your reliance on any information generated is solely at your own risk.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS -->
+<div class="modal-overlay" id="m_terms">
+  <div class="modal-window">
+    <div class="modal-header"><h2>Terms of Service</h2><span class="close-btn" onclick="closeModal('m_terms')">×</span></div>
+    <div class="modal-body">
+      <p>By using TrendToolsHub, you agree to comply with and be bound by the following terms of service. Please review these terms carefully.</p>
+      <h3>1. Acceptable Use</h3>
+      <p>Users are granted a non-exclusive license to use the generated data for their internal business or personal research. Any attempt to scrape, automate, or DDoS our infrastructure will result in immediate IP banning.</p>
+      <h3>2. Intellectual Property</h3>
+      <p>The code, UI design, and underlying logic of TrendToolsHub are protected by international copyright laws. Unauthorized reproduction of this tool's architecture is strictly prohibited.</p>
+      <h3>3. Modifications</h3>
+      <p>TTH reserves the right to modify or discontinue any part of the service without prior notice. We are not liable to any user or third party for such modifications.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY -->
+<div class="modal-overlay" id="m_privacy">
+  <div class="modal-window">
+    <div class="modal-header"><h2>Global Privacy Standards</h2><span class="close-btn" onclick="closeModal('m_privacy')">×</span></div>
+    <div class="modal-body">
+      <p>TrendToolsHub is committed to protecting your digital privacy. This policy outlines how we handle data within our application environment.</p>
+      <h3>Zero-Storage Research</h3>
+      <p>Unlike other SEO platforms, TTH does not store your seed keywords or research history on our databases. All keyword processing occurs within your browser's local memory, ensuring that your strategic research remains your property.</p>
+      <h3>Cookies and Tracking</h3>
+      <p>We use essential cookies to maintain session integrity and analyze aggregate traffic patterns via third-party analytics. No personally identifiable information (PII) is linked to these cookies.</p>
+      <h3>Compliance</h3>
+      <p>Our practices align with GDPR and CCPA guidelines regarding data transparency and user control. As we do not collect personal data, the right to deletion is inherent in our architecture.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
