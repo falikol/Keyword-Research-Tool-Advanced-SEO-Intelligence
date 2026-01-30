@@ -11,9 +11,27 @@ A professional-grade keyword research and SEO intelligence platform built for di
 
 ## 📸 Platform Screenshots
 
-![Keyword Research Interface](assets/screenshots/ui-main.png)
+### 🔍 Keyword Research Interface
+![Keyword Research Tool UI](Screenshot%202026-01-30%20132538.png)
 
-![Keyword Analysis Results](assets/screenshots/ui-results.png)
+### 📊 Keyword Suggestions & Analysis
+![Keyword Suggestions](Screenshot%202026-01-30%20132744.png)
+
+### ❓ LSI Questions Panel
+![LSI Questions](Screenshot%202026-01-30%20132825.png)
+
+### 🎯 Search Intent Classification
+![Search Intent](Screenshot%202026-01-30%20132856.png)
+
+### 📈 Difficulty & Ranking Probability
+![Keyword Difficulty](Screenshot%202026-01-30%20132924.png)
+
+### 🛠 Professional Content Utilities
+![Content Utilities](Screenshot%202026-01-30%20133044.png)
+
+### 🖥 Terminal Output & Generated Results
+![Terminal Output](Screenshot%202026-01-30%20133128.png)
+
 
 * **Real-Time Keyword Expansion**
   Generate hundreds of keyword ideas instantly from seed keywords.
