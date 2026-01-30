@@ -9,6 +9,12 @@ A professional-grade keyword research and SEO intelligence platform built for di
 
 ## 🚀 Key Features
 
+## 📸 Platform Screenshots
+
+![Keyword Research Interface](assets/screenshots/ui-main.png)
+
+![Keyword Analysis Results](assets/screenshots/ui-results.png)
+
 * **Real-Time Keyword Expansion**
   Generate hundreds of keyword ideas instantly from seed keywords.
 
