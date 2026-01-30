@@ -32,6 +32,50 @@ A professional-grade keyword research and SEO intelligence platform built for di
 ### 🖥 Terminal Output & Generated Results
 ![Terminal Output](Screenshot%202026-01-30%20133128.png)
 
+## ✨ Key Features
+
+- Real-time keyword research and analysis
+- Supports multiple keyword inputs (one per line)
+- Generates structured keyword insights instantly
+- Clean and distraction-free user interface
+- One-click copy and export functionality
+- Runs fully in the browser (no backend required)
+- Fast, lightweight, and privacy-friendly
+
+## 🚀 How to Use
+
+1. Open the live tool using the demo link above
+2. Enter your core keywords (one per line)
+3. Click on **Start Deep Analysis**
+4. Review the generated keyword insights
+5. Copy or export the results as needed
+
+## 🎯 Use Cases
+
+- SEO keyword research
+- Content planning and topic discovery
+- Digital marketing strategy development
+- Blogging and niche research
+- AI content ideation workflows
+
+## 🌐 Browser Compatibility
+
+- Google Chrome (Recommended)
+- Microsoft Edge
+- Mozilla Firefox
+- Brave Browser
+
+## ⚠️ Disclaimer
+
+This tool is designed for educational and research purposes.
+Keyword insights are generated based on predefined logic and trends.
+Always validate keywords using multiple sources before making critical SEO decisions.
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+You are free to use, modify, and distribute it with proper attribution.
+
 
 * **Real-Time Keyword Expansion**
   Generate hundreds of keyword ideas instantly from seed keywords.
